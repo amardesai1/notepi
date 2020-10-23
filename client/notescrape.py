@@ -1,6 +1,5 @@
 from inky import InkyPHAT
 from PIL import Image, ImageFont, ImageDraw
-import os
 import requests
 from bs4 import BeautifulSoup
 
@@ -46,18 +45,12 @@ for t in text:
 
 output = output.strip()
 
-#print output;
-
 f = open("output.txt", "r")
 lastnote = f.read()
-#print(lastnote)
 
 if lastnote!=output:
     f = open("output.txt", "w")
-    f.write(output)
-    f.close()
-
-
+    f.write(output)                                                                                                                                                                                                    f.close()                                                                                                                                                                                                      
     inky_display = InkyPHAT("red")
     inky_display.set_border(inky_display.WHITE)
 
@@ -65,16 +58,39 @@ if lastnote!=output:
     draw = ImageDraw.Draw(img)
 
     from font_fredoka_one import FredokaOne
-
     font = ImageFont.truetype(FredokaOne, 22)
 
     message = output
-    #message = "test text"
-    w, h = font.getsize(message)
-    x = (inky_display.WIDTH / 2) - (w / 2)
-    y = (inky_display.HEIGHT / 2) - (h / 2)
+    length = len(message)
+    lines = length//17
+    lastline = length%17
 
-    draw.text((x, y), message, inky_display.RED, font)
+    if length < 18:
+        w, h = font.getsize(message)
+        x = (inky_display.WIDTH / 2) - (w / 2)
+        y = (inky_display.HEIGHT / 2) - (h / 2)
+
+        draw.text((x, y), message, inky_display.RED, font)
+
+    else:
+        if lastline!=0:
+            lines+=1
+
+        w, h = font.getsize("01234567890123456")
+        height = 20*(lines//2)
+        x = (inky_display.WIDTH / 2) - (w / 2)
+        y = (inky_display.HEIGHT / 2) - (h / 2)-height
+        start = 0
+        end = 17-length
+        for i in range(lines):
+            msgslice = message[start:end]
+            draw.text((x, y), msgslice, inky_display.RED, font)
+            start+=17
+            end+=17
+            y+=20
+            if end>0:
+                draw.text((x, y), message[start:], inky_display.RED, font)
+                break
+
     inky_display.set_image(img)
     inky_display.show()
-
