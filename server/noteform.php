@@ -18,7 +18,7 @@ $name = file_get_contents("notes.txt");
 <?php
 if (strcmp("", $_POST["name"]) !== 0) {
   $name = $_POST["name"];
-  $output = shell_exec('sudo /var/www/pc.amardesai.org/html/history.sh');
+  $output = shell_exec('sudo ./history.sh');
 }
 echo file_put_contents("notes.txt",$name);
 echo "<h2>Your Input:</h2>";
