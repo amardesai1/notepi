@@ -3,7 +3,7 @@ from PIL import Image, ImageFont, ImageDraw
 import requests
 from bs4 import BeautifulSoup
 
-url = 'https://pc.amardesai.org/noteform.php'
+url = ''
 
 res = requests.get(url)
 
